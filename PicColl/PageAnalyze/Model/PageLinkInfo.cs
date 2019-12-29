@@ -15,5 +15,7 @@ namespace PicColl.PageAnalyze.Model
         /// 页URL
         /// </summary>
         public string PageUrl { get; set; }
+
+        public object Tag { get; set; }
     }
 }

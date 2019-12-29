@@ -60,7 +60,7 @@ namespace PicColl.PageAnalyze
             return json;
         }
 
-        protected override List<PicInfo> HandePageImageLink(PageContentInfo pageContentInfo)
+        protected override List<PicDto> HandePageImageLink(PageContentInfo pageContentInfo)
         {
             var imgItem = (JArray)GetPageJsonData(pageContentInfo)["data"]["items"];
 
@@ -74,7 +74,7 @@ namespace PicColl.PageAnalyze
 
             Console.WriteLine(string.Format("Find {0} Urls", contentLinkUrls.Count));
 
-            var imgLinkUrls = new List<PicInfo>();
+            var imgLinkUrls = new List<PicDto>();
             foreach (var contentLink in contentLinkUrls)
             {
                 Console.WriteLine(string.Format("open:{0}", contentLink));
@@ -91,7 +91,7 @@ namespace PicColl.PageAnalyze
                 {
                     var imgUrl = bigPicTag.GetAttribute("src");
                     Console.WriteLine(string.Format("img:{0}", imgUrl));
-                    imgLinkUrls.Add(new PicInfo()
+                    imgLinkUrls.Add(new PicDto()
                     {
                         ImageUrl = imgUrl,
                         CreateDate = DateTime.Now,

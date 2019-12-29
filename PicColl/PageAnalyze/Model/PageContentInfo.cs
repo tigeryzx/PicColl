@@ -9,5 +9,7 @@ namespace PicColl.PageAnalyze.Model
         public string Url { get; set; }
 
         public string Content { get; set; }
+
+        public object Tag { get; set; }
     }
 }

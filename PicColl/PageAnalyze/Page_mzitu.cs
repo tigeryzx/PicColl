@@ -28,25 +28,31 @@ namespace PicColl.PageAnalyze
                 Url = x.GetAttribute("href")
             }).ToList();
 
-            this.EndPageIndex = allMenu.Count;
+            if (!this.EndPageIndex.HasValue)
+                this.EndPageIndex = allMenu.Count;
             var currentMenu = this.allMenu[startPageIndex - 1];
             this.PagerInfo.PageUrl = currentMenu.Url;
             this.PagerInfo.PageIndex = startPageIndex;
+            this.PagerInfo.Tag = currentMenu;
         }
 
         protected override PageLinkInfo HandeNext(PageContentInfo pageContentInfo)
         {
             this.PagerInfo.PageIndex += 1;
+            if (this.PagerInfo.PageIndex - 1 < this.allMenu.Count)
+                return null;
+
             var menu = allMenu[this.PagerInfo.PageIndex -1];
             
             return new PageLinkInfo()
             {
                 PageUrl = menu.Url,
-                PageIndex = this.PagerInfo.PageIndex
+                PageIndex = this.PagerInfo.PageIndex,
+                Tag = menu
             };
         }
 
-        protected override List<PicInfo> HandePageImageLink(PageContentInfo pageContentInfo)
+        protected override List<PicDto> HandePageImageLink(PageContentInfo pageContentInfo)
         {
             var imagePage = this.GetPageContext(pageContentInfo.Url);
             var totalPageEl = imagePage.QuerySelector("span[class=dots]").NextElementSibling;
@@ -57,18 +63,20 @@ namespace PicColl.PageAnalyze
             var mainImageEl = imagePage.QuerySelector(".main-image img");
             var mainImageUrl = mainImageEl.GetAttribute("src");
 
-            List<PicInfo> picInfos = new List<PicInfo>();
+            List<PicDto> picInfos = new List<PicDto>();
 
             for (var i = 1; i <= totalImageIndex; i++)
             {
                 var imgUrl = mainImageUrl.Replace("01.", i.ToString("00") + ".");
+                LinkMenu menu = (LinkMenu)pageContentInfo.Tag;
 
-                picInfos.Add(new PicInfo()
+                picInfos.Add(new PicDto()
                 {
                     ImageUrl = imgUrl,
                     CreateDate = DateTime.Now,
                     ImageSiteUrl = pageContentInfo.Url,
-                    SrcImageName = Path.GetFileName(imgUrl)
+                    SrcImageName = Path.GetFileName(imgUrl),
+                    Title = menu.Name
                 });
             }
 
@@ -83,7 +91,8 @@ namespace PicColl.PageAnalyze
             return new PageLinkInfo()
             {
                 PageUrl = menu.Url,
-                PageIndex = this.PagerInfo.PageIndex
+                PageIndex = this.PagerInfo.PageIndex,
+                Tag = menu
             };
         }
 

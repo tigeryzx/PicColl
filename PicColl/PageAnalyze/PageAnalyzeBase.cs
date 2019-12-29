@@ -75,7 +75,7 @@ namespace PicColl.PageAnalyze
         /// 获取当前页所有图片链接
         /// </summary>
         /// <returns></returns>
-        public virtual List<PicInfo> GetCurrentPageImageLinks()
+        public virtual List<PicDto> GetCurrentPageImageLinks()
         {
             if(this.PagerInfo == null)
             {
@@ -104,6 +104,7 @@ namespace PicColl.PageAnalyze
             var pageContentInfo = new PageContentInfo();
             pageContentInfo.Url = this.PagerInfo.PageUrl;
             pageContentInfo.Content = HttpUitls.Get(this.PagerInfo.PageUrl);
+            pageContentInfo.Tag = this.PagerInfo.Tag;
             this.CurrentPageContext = pageContentInfo;
 
             return HandePageImageLink(pageContentInfo);
@@ -113,7 +114,7 @@ namespace PicColl.PageAnalyze
         /// 处理页面图片链接
         /// </summary>
         /// <returns></returns>
-        protected abstract List<PicInfo> HandePageImageLink(PageContentInfo pageContentInfo);
+        protected abstract List<PicDto> HandePageImageLink(PageContentInfo pageContentInfo);
 
         public bool Next()
         {
