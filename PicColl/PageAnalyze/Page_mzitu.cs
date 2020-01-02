@@ -5,6 +5,7 @@ using PicColl.DBContext.Model;
 using PicColl.PageAnalyze.Model;
 using System.Linq;
 using System.IO;
+using System.Threading;
 
 namespace PicColl.PageAnalyze
 {
@@ -39,7 +40,7 @@ namespace PicColl.PageAnalyze
         protected override PageLinkInfo HandeNext(PageContentInfo pageContentInfo)
         {
             this.PagerInfo.PageIndex += 1;
-            if (this.PagerInfo.PageIndex - 1 < this.allMenu.Count)
+            if (this.PagerInfo.PageIndex > this.allMenu.Count)
                 return null;
 
             var menu = allMenu[this.PagerInfo.PageIndex -1];
@@ -55,27 +56,34 @@ namespace PicColl.PageAnalyze
         protected override List<PicDto> HandePageImageLink(PageContentInfo pageContentInfo)
         {
             var imagePage = this.GetPageContext(pageContentInfo.Url);
-            var totalPageEl = imagePage.QuerySelector("span[class=dots]").NextElementSibling;
+            var navLinks = imagePage.QuerySelectorAll("div[class=pagenavi] a");
+            var totalPageEl = navLinks[navLinks.Count() - 2];
             var totalImageIndex = 0;
             if (totalPageEl != null)
                 totalImageIndex = Convert.ToInt32(totalPageEl.TextContent);
-
-            var mainImageEl = imagePage.QuerySelector(".main-image img");
-            var mainImageUrl = mainImageEl.GetAttribute("src");
 
             List<PicDto> picInfos = new List<PicDto>();
 
             for (var i = 1; i <= totalImageIndex; i++)
             {
-                var imgUrl = mainImageUrl.Replace("01.", i.ToString("00") + ".");
+                var imgPageUlr = pageContentInfo.Url + "/" + i;
+
+                if (i % 5 == 0)
+                    Thread.Sleep(1000);
+
+                var imgPageContent = this.GetPageContext(imgPageUlr);
+
+                var imageEl = imgPageContent.QuerySelector(".main-image img");
+                var imageUrl = imageEl.GetAttribute("src");
+
                 LinkMenu menu = (LinkMenu)pageContentInfo.Tag;
 
                 picInfos.Add(new PicDto()
                 {
-                    ImageUrl = imgUrl,
+                    ImageUrl = imageUrl,
                     CreateDate = DateTime.Now,
-                    ImageSiteUrl = pageContentInfo.Url,
-                    SrcImageName = Path.GetFileName(imgUrl),
+                    ImageSiteUrl = imgPageUlr,
+                    SrcImageName = Path.GetFileName(imageUrl),
                     Title = menu.Name
                 });
             }

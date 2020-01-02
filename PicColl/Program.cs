@@ -15,29 +15,8 @@ namespace PicColl
 {
     class Program
     {
-        static void Download(List<PicInfo> list)
-        {
-            for (var i = 0; i < list.Count; i++)
-            {
-                var item = list[i];
-                var filename = Path.GetFileName(item.ImageUrl);
-                DownLoadHelper.HttpDownload(item.ImageUrl, "E:\\test\\" + filename);
-                if (i % 4 == 0)
-                    Thread.Sleep(1000);
-            }
-        }
-
         static void Main(string[] args)
         {
-
-            //Page_mzitu page_Mzitu = new Page_mzitu("https://www.mzitu.com/all/", 1, null);
-            //var test = page_Mzitu.GetCurrentPageImageLinks();
-            //Download(test);
-            //page_Mzitu.Next();
-            //test = page_Mzitu.GetCurrentPageImageLinks();
-            //Download(test);
-            //Console.ReadKey();
-
             PicDownloadMachine machine = new PicDownloadMachine();
 
             while (true)

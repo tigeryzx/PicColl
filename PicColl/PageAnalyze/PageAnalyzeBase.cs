@@ -103,7 +103,7 @@ namespace PicColl.PageAnalyze
 
             var pageContentInfo = new PageContentInfo();
             pageContentInfo.Url = this.PagerInfo.PageUrl;
-            pageContentInfo.Content = HttpUitls.Get(this.PagerInfo.PageUrl);
+            // pageContentInfo.Content = HttpUitls.Get(this.PagerInfo.PageUrl);
             pageContentInfo.Tag = this.PagerInfo.Tag;
             this.CurrentPageContext = pageContentInfo;
 

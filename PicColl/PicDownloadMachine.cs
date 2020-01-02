@@ -250,6 +250,7 @@ namespace PicColl
                 else if (id == "2")
                 {
                     var rootUrl = "https://www.mzitu.com/all/";
+                    //var rootUrl = "https://www.mzitu.com/old/";
                     selected = new Page_mzitu(rootUrl, startPage, endPage);
                 };
             } while (selected == null);

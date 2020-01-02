@@ -12,17 +12,13 @@ namespace PicColl
         {
             //System.GC.Collect();
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
-            request.Proxy = null;
-            request.KeepAlive = false;
-            request.Method = "GET";
-            request.ContentType = "application/json; charset=UTF-8";
-            //request.AutomaticDecompression = DecompressionMethods.GZip;
             request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
-            request.Headers["Accept-Encoding"] = "gzip, deflate, sdch";
+            request.Method = "GET";
+            request.Headers["accept"] = "image/webp,image/apng,image/*,*/*;q=0.8";
+            request.Headers["accept-encoding"] = "gzip, deflate, br";
             request.Headers["Accept-Language"] = "zh-CN,zh;q=0.8";
-            //request.Headers["Host"] = "www.sesehezi.com";
+            //request.Headers["Host"] = "i5.meizitu.net";
             request.Headers["Pragma"] = "no-cache";
-            request.Headers["Upgrade-Insecure-Requests"] = "1";
             request.Headers["referer"] = "https://www.mzitu.com/";
             request.Headers["User-Agent"] = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
 
